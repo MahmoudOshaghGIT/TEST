@@ -80,9 +80,9 @@ def display_images_with_actions(
                     st.text("Failed to load image.")
 
     # Display the decisions at the end of the app for review
-    st.subheader("Decisions")
-    st.write("Below are the decisions you've made:")
-    st.write(decisions)
+    #st.subheader("Decisions")
+    #st.write("Below are the decisions you've made:")
+    #st.write(decisions)
 
     return decisions  # Return the decisions dictionary to save to a file
 
