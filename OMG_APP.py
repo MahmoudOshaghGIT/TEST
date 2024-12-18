@@ -87,7 +87,7 @@ def display_images_with_actions(
     return decisions  # Return the decisions dictionary to save to a file
 
 # Streamlit App
-st.title("Image Gallery Viewer with Approve/Reject")
+st.title("OMG Category Approve/Reject")
 
 # Load `df_final_omg` and `omg_list` locally
 df_final_omg = pd.read_csv("df_final_omg.csv")  # Replace with the actual path to your DataFrame CSV file
