@@ -101,8 +101,7 @@ display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
 
 
 
-# Sample decisions dictionary (this would be populated based on user interaction)
-decisions = {"ref1": "Approve", "ref2": "Reject"}
+
 
 # Function to save decisions to file
 def save_decisions_to_file(decisions, file_path="decisions.json"):
