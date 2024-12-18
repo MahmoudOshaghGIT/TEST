@@ -6,7 +6,6 @@ import cv2
 import math
 import numpy as np
 from PIL import Image
-import json
 
 # Function to load and scale down gallery images
 def load_gallery_image_scaled(ref):
@@ -79,11 +78,6 @@ def display_images_with_actions(
                     st.error(f"Error: {e}")
                     st.text("Failed to load image.")
 
-    # Display the decisions at the end of the app for review
-    #st.subheader("Decisions")
-    #st.write("Below are the decisions you've made:")
-    #st.write(decisions)
-
     return decisions  # Return the decisions dictionary to save to a file
 
 # Streamlit App
@@ -99,10 +93,12 @@ max_columns = st.sidebar.slider("Max Columns", min_value=1, max_value=10, value=
 # Display the gallery with Approve/Reject options
 decisions = display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
 
-# Function to save decisions to file
-def save_decisions_to_file(decisions, file_path="decisions.json"):
-    with open(file_path, "w") as f:
-        json.dump(decisions, f)
+# Function to save decisions to CSV
+def save_decisions_to_file(decisions, file_path="decisions.csv"):
+    # Convert decisions dictionary to DataFrame
+    decisions_df = pd.DataFrame(list(decisions.items()), columns=["public_reference", "decision"])
+    # Save the DataFrame as a CSV
+    decisions_df.to_csv(file_path, index=False)
     st.success(f"Decisions saved to {file_path}")
 
 # Save the file when the button is clicked
@@ -110,10 +106,10 @@ if st.button("Save Decisions to File"):
     save_decisions_to_file(decisions)
 
     # Allow the user to download the file
-    with open("decisions.json", "r") as f:
+    with open("decisions.csv", "r") as f:
         st.download_button(
             label="Download Decisions File",
             data=f,
-            file_name="decisions.json",
-            mime="application/json"
+            file_name="decisions.csv",
+            mime="text/csv"
         )
