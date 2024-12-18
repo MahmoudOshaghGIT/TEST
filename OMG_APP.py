@@ -7,9 +7,7 @@ import math
 from PIL import Image
 
 import json
-import subprocess
-import streamlit as st
-import os
+
 
 # Function to load and scale down gallery images
 def load_gallery_image_scaled(ref):
@@ -103,37 +101,24 @@ display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
 
 
 
-# Function to save decisions to a file (e.g., decisions.json)
+# Sample decisions dictionary (this would be populated based on user interaction)
+decisions = {"ref1": "Approve", "ref2": "Reject"}
+
+# Function to save decisions to file
 def save_decisions_to_file(decisions, file_path="decisions.json"):
     with open(file_path, "w") as f:
         json.dump(decisions, f)
-    st.success(f"Decisions have been saved to {file_path}")
+    st.success(f"Decisions saved to {file_path}")
 
-# Function to commit changes to Git
-def commit_changes_to_git():
-    try:
-        # Add the changes to git
-        subprocess.run(["git", "add", "decisions.json"], check=True)
-        
-        # Commit the changes
-        subprocess.run(["git", "commit", "-m", "Update decisions file"], check=True)
-        
-        # Push the changes to the Git repository
-        subprocess.run(["git", "push"], check=True)
-        
-        st.success("Decisions have been committed and pushed to Git!")
-    except subprocess.CalledProcessError as e:
-        st.error(f"Error committing changes: {e}")
-
-# Sample decisions dictionary
-decisions = {"ref1": "Approve", "ref2": "Reject"}  # You would dynamically populate this based on user input
-
-# Save decisions when the user clicks the button
-if st.button("Save and Commit Decisions to Git"):
+# Save the file when the button is clicked
+if st.button("Save Decisions to File"):
     save_decisions_to_file(decisions)
-    commit_changes_to_git()
 
-# Your normal Streamlit app code to display images and take user input
-# e.g., display images and capture user approval/rejection decisions
-st.title("Image Gallery Viewer")
-# Other Streamlit code goes here for your image display and user inputs...
+    # Allow the user to download the file
+    with open("decisions.json", "r") as f:
+        st.download_button(
+            label="Download Decisions File",
+            data=f,
+            file_name="decisions.json",
+            mime="application/json"
+        )
