@@ -66,9 +66,7 @@ def display_images_with_actions(
                     st.caption(f"{ref}\nMethod: {method_value}\n{make_value} {model_value}")
                     
                     # Add Approve/Reject radio buttons
-                    decision = st.radio(
-                    f"",
-                        ('Approve', 'Reject'),
+                    decision = st.radio(('Approve', 'Reject'),
                         key=f"radio_{ref}"
                     )
                     decisions[ref] = decision  # Save the decision for each image
