@@ -13,10 +13,10 @@ def load_gallery_image_scaled(ref):
         image_bytes = urllib.request.urlopen(f"https://m.atcdn.co.uk/a/media/w1024/{ref}.jpg").read()
         image = mmcv.imfrombytes(image_bytes)
         # Rescale image to 400x300
-        return mmcv.imrescale(image, (400, 300))
+        return mmcv.imrescale(image, (600, 400))
     except Exception as e:
         # Return error placeholder image if loading fails
-        placeholder_image = Image.new("RGB", (400, 300), color=(255, 0, 0))
+        placeholder_image = Image.new("RGB", (600, 400), color=(255, 0, 0))
         return cv2.cvtColor(np.array(placeholder_image), cv2.COLOR_RGB2BGR)
 
 # Streamlit UI for displaying images with Approve/Reject options
@@ -27,7 +27,7 @@ def display_images_with_actions(
     method_column='method',
     make_column='vehicle_make',
     model_column='vehicle_model',
-    max_columns=5
+    max_columns=3
 ):
     # Create a dictionary to store the decisions
     decisions = {}
