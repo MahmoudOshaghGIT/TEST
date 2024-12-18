@@ -7,6 +7,8 @@ import math
 import numpy as np
 from PIL import Image
 
+st.set_page_config(layout="wide")
+
 # Function to load and scale down gallery images
 def load_gallery_image_scaled(ref):
     try:
