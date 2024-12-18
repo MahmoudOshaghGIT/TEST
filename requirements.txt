@@ -1,6 +1,5 @@
 streamlit
-mmcv-full==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.12.0/index.html
-opencv-python-headless
+mmcv-full -f https://download.openmmlab.com/mmcv/dist/cpu/torch1.12.0/index.html
 matplotlib
 pandas
 Pillow
