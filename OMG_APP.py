@@ -4,10 +4,9 @@ import urllib
 import mmcv
 import cv2
 import math
+import numpy as np
 from PIL import Image
-
 import json
-
 
 # Function to load and scale down gallery images
 def load_gallery_image_scaled(ref):
@@ -15,7 +14,7 @@ def load_gallery_image_scaled(ref):
         # Load image bytes from URL
         image_bytes = urllib.request.urlopen(f"https://m.atcdn.co.uk/a/media/w1024/{ref}.jpg").read()
         image = mmcv.imfrombytes(image_bytes)
-        # Rescale image to 400x300
+        # Rescale image to 600x400
         return mmcv.imrescale(image, (600, 400))
     except Exception as e:
         # Return error placeholder image if loading fails
@@ -32,9 +31,9 @@ def display_images_with_actions(
     model_column='vehicle_model',
     max_columns=3
 ):
-    # Create a dictionary to store the decisions
+    # Create a dictionary to store the decisions (initialized outside to retain decisions)
     decisions = {}
-    
+
     # Calculate number of rows and columns
     num_images = len(public_references)
     num_columns = min(max_columns, num_images)
@@ -85,6 +84,8 @@ def display_images_with_actions(
     st.write("Below are the decisions you've made:")
     st.write(decisions)
 
+    return decisions  # Return the decisions dictionary to save to a file
+
 # Streamlit App
 st.title("Image Gallery Viewer with Approve/Reject")
 
@@ -96,12 +97,7 @@ omg_list = df_final_omg['public_reference'].tolist()  # Example: Get the list of
 max_columns = st.sidebar.slider("Max Columns", min_value=1, max_value=10, value=5)
 
 # Display the gallery with Approve/Reject options
-display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
-
-
-
-
-
+decisions = display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
 
 # Function to save decisions to file
 def save_decisions_to_file(decisions, file_path="decisions.json"):
