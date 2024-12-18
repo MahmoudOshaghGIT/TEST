@@ -67,6 +67,7 @@ def display_images_with_actions(
                     
                     # Add Approve/Reject radio buttons
                     decision = st.radio(
+                    f"",
                         ('Approve', 'Reject'),
                         key=f"radio_{ref}"
                     )
