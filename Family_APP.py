@@ -24,7 +24,7 @@ def load_gallery_image_scaled(ref):
 
 # Streamlit UI for displaying images with Approve/Reject options
 def display_images_with_actions(
-    public_references,
+    metadata_search_id,
     df,
     image_column='imageId',
     make_column='make',
@@ -35,7 +35,7 @@ def display_images_with_actions(
     decisions = {}
 
     # Calculate number of rows and columns
-    num_images = len(public_references)
+    num_images = len(metadata_search_id)
     num_columns = min(max_columns, num_images)
     num_rows = math.ceil(num_images / num_columns)
 
@@ -47,7 +47,7 @@ def display_images_with_actions(
             if idx >= num_images:
                 break
             
-            ref = public_references[idx]
+            ref = metadata_search_id[idx]
             try:
                 # Get the image ID, method, make, and model from the DataFrame
                 image_id = df.loc[df['metadata_search_id'] == ref, image_column].iloc[0]
@@ -85,7 +85,7 @@ st.title("OMG Category Approve/Reject")
 
 # Load `df_final_omg` and `omg_list` locally
 df_final_omg = pd.read_csv("df_final_family.csv")  # Replace with the actual path to your DataFrame CSV file
-omg_list = df_final_omg['public_reference'].tolist()  # Example: Get the list of public references
+omg_list = df_final_omg['metadata_search_id'].tolist()  # Example: Get the list of public references
 
 # User input for customizing the gallery
 max_columns = st.sidebar.slider("Max Columns", min_value=1, max_value=10, value=5)
@@ -96,7 +96,7 @@ decisions = display_images_with_actions(omg_list, df_final_omg, max_columns=max_
 # Function to save decisions to CSV
 def save_decisions_to_file(decisions, file_path="decisions.csv"):
     # Convert decisions dictionary to DataFrame
-    decisions_df = pd.DataFrame(list(decisions.items()), columns=["public_reference", "decision"])
+    decisions_df = pd.DataFrame(list(decisions.items()), columns=["metadata_search_id", "decision"])
     # Save the DataFrame as a CSV
     decisions_df.to_csv(file_path, index=False)
     st.success(f"Decisions saved to {file_path}")
