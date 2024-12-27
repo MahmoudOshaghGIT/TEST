@@ -1,4 +1,4 @@
-public_references,vehicle_make,vehicle_model,imageId,method
+public_reference,vehicle_make,vehicle_model,imageId,method
 202405139656294,Kia,Carens,244acb811ebc442686f6448d8cb4d54b,fuzzy
 202411286824731,BMW,2 Series Gran Tourer,fbbb37ab365a45f081bd0f53ecaecb8a,fuzzy
 202411216566874,BMW,X7,40e6106673b044b0bf930160eaed4675,fuzzy
