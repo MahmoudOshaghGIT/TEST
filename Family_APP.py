@@ -27,9 +27,8 @@ def display_images_with_actions(
     public_references,
     df,
     image_column='imageId',
-    method_column='method',
-    make_column='vehicle_make',
-    model_column='vehicle_model',
+    make_column='make',
+    model_column='model',
     max_columns=3
 ):
     # Create a dictionary to store the decisions (initialized outside to retain decisions)
@@ -51,10 +50,9 @@ def display_images_with_actions(
             ref = public_references[idx]
             try:
                 # Get the image ID, method, make, and model from the DataFrame
-                image_id = df.loc[df['public_reference'] == ref, image_column].iloc[0]
-                method_value = df.loc[df['public_reference'] == ref, method_column].iloc[0]
-                make_value = df.loc[df['public_reference'] == ref, make_column].iloc[0]
-                model_value = df.loc[df['public_reference'] == ref, model_column].iloc[0]
+                image_id = df.loc[df['metadata_search_id'] == ref, image_column].iloc[0]
+                make_value = df.loc[df['metadata_search_id'] == ref, make_column].iloc[0]
+                model_value = df.loc[df['metadata_search_id'] == ref, model_column].iloc[0]
                 
                 # Load and scale down the image
                 image = load_gallery_image_scaled(image_id)
