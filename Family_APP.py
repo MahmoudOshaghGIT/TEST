@@ -83,17 +83,16 @@ def display_images_with_actions(
     return decisions  # Return the decisions dictionary to save to a file
 
 # Streamlit App
-st.title("OMG Category Approve/Reject")
+st.title("Family Category Approve/Reject")
 
-# Load `df_final_omg` and `omg_list` locally
-df_final_omg = pd.read_csv("df_final_family.csv")  # Replace with the actual path to your DataFrame CSV file
-omg_list = df_final_omg['public_reference'].tolist()  # Example: Get the list of public references
+df_final_family = pd.read_csv("df_final_family.csv")  # Replace with the actual path to your DataFrame CSV file
+family_list = df_final_family['public_reference'].tolist()  # Example: Get the list of public references
 
 # User input for customizing the gallery
 max_columns = st.sidebar.slider("Max Columns", min_value=1, max_value=10, value=5)
 
 # Display the gallery with Approve/Reject options
-decisions = display_images_with_actions(omg_list, df_final_omg, max_columns=max_columns)
+decisions = display_images_with_actions(family_list, df_final_family, max_columns=max_columns)
 
 # Function to save decisions to CSV
 def save_decisions_to_file(decisions, file_path="decisions.csv"):
