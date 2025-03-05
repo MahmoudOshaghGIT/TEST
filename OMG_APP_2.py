@@ -86,7 +86,7 @@ def display_images_with_actions(
 st.title("OMG Category Approve/Reject")
 
 # Load `df_final_omg` and `omg_list` locally
-df_final_omg = pd.read_csv("df_final_omg_2.csv")  # Replace with the actual path to your DataFrame CSV file
+df_final_omg = pd.read_csv("df_final_omg_3.csv")  # Replace with the actual path to your DataFrame CSV file
 omg_list = df_final_omg['public_reference'].tolist()  # Example: Get the list of public references
 
 # User input for customizing the gallery
