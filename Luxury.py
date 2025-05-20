@@ -85,7 +85,7 @@ def display_images_with_actions(
 # Streamlit App
 st.title("Sport Category Approve/Reject")
 
-df_final_sport = pd.read_csv("df_final_sport.csv")  # Replace with the actual path to your DataFrame CSV file
+df_final_sport = pd.read_csv("df_final_luxury.csv")  # Replace with the actual path to your DataFrame CSV file
 sport_list = df_final_sport['public_reference'].tolist()  # Example: Get the list of public references
 
 # User input for customizing the gallery
