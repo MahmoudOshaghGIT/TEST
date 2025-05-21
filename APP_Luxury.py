@@ -9,15 +9,23 @@ from PIL import Image
 st.set_page_config(layout="wide")
 
 # Function to load and scale down gallery images using OpenCV (not mmcv)
-def load_gallery_image_scaled(ref):
+def load_gallery_image_scaled(ref, max_width=600, max_height=400):
     try:
         url = f"https://m.atcdn.co.uk/a/media/w1024/{ref}.jpg"
         image_bytes = urllib.request.urlopen(url).read()
         image_array = np.frombuffer(image_bytes, np.uint8)
         image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-        return cv2.resize(image, (600, 400))
+
+        # Get original dimensions
+        h, w = image.shape[:2]
+        scale = min(max_width / w, max_height / h)
+
+        new_w = int(w * scale)
+        new_h = int(h * scale)
+
+        return cv2.resize(image, (new_w, new_h))
     except Exception as e:
-        placeholder = Image.new("RGB", (600, 400), color=(255, 0, 0))
+        placeholder = Image.new("RGB", (max_width, max_height), color=(255, 0, 0))
         return cv2.cvtColor(np.array(placeholder), cv2.COLOR_RGB2BGR)
 
 # Streamlit UI for displaying images with Approve/Reject options
