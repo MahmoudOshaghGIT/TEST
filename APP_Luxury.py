@@ -1,27 +1,28 @@
 import streamlit as st
 import pandas as pd
 import urllib
+import mmcv
 import cv2
 import math
 import numpy as np
 from PIL import Image
 
-# Set wide layout
 st.set_page_config(layout="wide")
 
-# Function to load and resize image from URL
+# Function to load and scale down gallery images
 def load_gallery_image_scaled(ref):
     try:
-        url = f"https://m.atcdn.co.uk/a/media/w1024/{ref}.jpg"
-        image_bytes = urllib.request.urlopen(url).read()
-        image_array = np.frombuffer(image_bytes, np.uint8)
-        image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-        return cv2.resize(image, (600, 400))
+        # Load image bytes from URL
+        image_bytes = urllib.request.urlopen(f"https://m.atcdn.co.uk/a/media/w1024/{ref}.jpg").read()
+        image = mmcv.imfrombytes(image_bytes)
+        # Rescale image to 600x400
+        return mmcv.imrescale(image, (600, 400))
     except Exception as e:
-        placeholder = Image.new("RGB", (600, 400), color=(255, 0, 0))
-        return cv2.cvtColor(np.array(placeholder), cv2.COLOR_RGB2BGR)
+        # Return error placeholder image if loading fails
+        placeholder_image = Image.new("RGB", (600, 400), color=(255, 0, 0))
+        return cv2.cvtColor(np.array(placeholder_image), cv2.COLOR_RGB2BGR)
 
-# Display images with approve/reject buttons
+# Streamlit UI for displaying images with Approve/Reject options
 def display_images_with_actions(
     public_references,
     df,
@@ -32,6 +33,7 @@ def display_images_with_actions(
     max_columns=3
 ):
     decisions = {}
+
     num_images = len(public_references)
     num_columns = min(max_columns, num_images)
     num_rows = math.ceil(num_images / num_columns)
@@ -42,7 +44,7 @@ def display_images_with_actions(
             idx = row * num_columns + col_idx
             if idx >= num_images:
                 break
-
+            
             ref = public_references[idx]
             try:
                 image_id = df.loc[df['public_reference'] == ref, image_column].iloc[0]
@@ -67,16 +69,17 @@ def display_images_with_actions(
                 with cols[col_idx]:
                     st.error(f"Error: {e}")
                     st.text("Failed to load image.")
+
     return decisions
 
-# Title
+# Streamlit App Title
 st.title("Luxury Category Approve/Reject")
 
-# Load the CSV file
+# Load luxury dataset
 df_final_luxury = pd.read_csv("df_final_luxury.csv")
 luxury_list = df_final_luxury['public_reference'].tolist()
 
-# Sidebar column control
+# User input for gallery layout
 max_columns = st.sidebar.slider("Max Columns", min_value=1, max_value=10, value=5)
 
 # Display gallery
@@ -88,13 +91,13 @@ decisions = display_images_with_actions(
     max_columns=max_columns
 )
 
-# Save to CSV
+# Function to save decisions to CSV
 def save_decisions_to_file(decisions, file_path="decisions.csv"):
-    df = pd.DataFrame(list(decisions.items()), columns=["public_reference", "decision"])
-    df.to_csv(file_path, index=False)
+    decisions_df = pd.DataFrame(list(decisions.items()), columns=["public_reference", "decision"])
+    decisions_df.to_csv(file_path, index=False)
     st.success(f"Decisions saved to {file_path}")
 
-# Save and Download buttons
+# Save & download button
 if st.button("Save Decisions to File"):
     save_decisions_to_file(decisions)
 
