@@ -28,8 +28,8 @@ def display_images_with_actions(
     df,
     image_column='imageId',
     method_column='method',
-    make_column='vehicle_make',
-    model_column='vehicle_model',
+    make_column='vehicle_standard_make',
+    model_column='vehicle_standard_model',
     max_columns=3
 ):
     # Create a dictionary to store the decisions (initialized outside to retain decisions)
