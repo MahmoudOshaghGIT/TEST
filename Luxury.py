@@ -83,7 +83,7 @@ def display_images_with_actions(
     return decisions  # Return the decisions dictionary to save to a file
 
 # Streamlit App
-st.title("Sport Category Approve/Reject")
+st.title("Luxury Category Approve/Reject")
 
 df_final_sport = pd.read_csv("df_final_luxury.csv")  # Replace with the actual path to your DataFrame CSV file
 sport_list = df_final_sport['public_reference'].tolist()  # Example: Get the list of public references
