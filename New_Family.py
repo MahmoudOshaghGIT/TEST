@@ -62,7 +62,7 @@ def display_images(df, max_columns=3):
     return decisions
 
 # ---- App ----
-st.title("Vehicle Image Approval Tool")
+st.title("Family Cars")
 
 df = pd.read_csv("vehicle_image_map.csv")  # your new CSV
 
