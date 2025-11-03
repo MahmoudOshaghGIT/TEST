@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import urllib
-import mmcv
+
+from io import BytesIO
 import cv2
 import math
 import numpy as np
@@ -14,9 +15,11 @@ def load_gallery_image_scaled(image_id):
     try:
         url = f"https://m.atcdn.co.uk/a/media/w1024/{image_id}.jpg"
         image_bytes = urllib.request.urlopen(url).read()
-        image = mmcv.imfrombytes(image_bytes)
-        return mmcv.imrescale(image, (600, 400))
-    except Exception:
+        image = Image.open(BytesIO(image_bytes)).convert("RGB")
+
+        image = image.resize((600, 400))  # resize like your original
+        return cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    except:
         placeholder = Image.new("RGB", (600, 400), color=(255, 0, 0))
         return cv2.cvtColor(np.array(placeholder), cv2.COLOR_RGB2BGR)
 
