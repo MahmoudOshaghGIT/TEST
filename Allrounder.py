@@ -17,8 +17,10 @@ def load_gallery_image_scaled(image_id):
         image_bytes = urllib.request.urlopen(url).read()
         image = Image.open(BytesIO(image_bytes)).convert("RGB")
 
-        image = image.resize((600, 400))  # resize like your original
+        # Resize to similar size as original MMCV version
+        image = image.resize((600, 400))
         return cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+
     except:
         placeholder = Image.new("RGB", (600, 400), color=(255, 0, 0))
         return cv2.cvtColor(np.array(placeholder), cv2.COLOR_RGB2BGR)
@@ -36,7 +38,7 @@ def display_images(df, max_columns=3):
             idx = row * num_columns + col_idx
             if idx >= num_images:
                 break
-            
+
             row_data = df.iloc[idx]
 
             image_id = row_data["imageId"]
@@ -52,19 +54,24 @@ def display_images(df, max_columns=3):
                 st.image(st_image, use_container_width=True)
                 st.caption(f"{make} {model}\nDerivative: {derivative_id}")
 
+                # ✅ Unique Streamlit key
                 decision = st.radio(
                     f"Action for {image_id}",
                     ('Approve', 'Reject'),
-                    key=f"radio_{image_id}"
+                    key=f"radio_{idx}_{image_id}"
                 )
                 decisions[image_id] = decision
 
     return decisions
 
 # ---- App ----
-st.title("All rounders Cars")
+st.title("All Rounder Cars Review")
 
-df = pd.read_csv("allrounder_image_map.csv")  # your new CSV
+# Load CSV
+df = pd.read_csv("allrounder_image_map.csv")
+
+# ✅ Remove duplicates to avoid duplicate widget keys
+df = df.drop_duplicates(subset=["imageId"]).reset_index(drop=True)
 
 max_columns = st.sidebar.slider("Columns", 1, 10, 5)
 
@@ -80,4 +87,9 @@ if st.button("Save Decisions"):
     save_decisions(decisions)
 
     with open("decisions.csv", "r") as f:
-        st.download_button("Download Decisions File", f, "decisions.csv", "text/csv")
+        st.download_button(
+            "Download Decisions File",
+            f,
+            "decisions.csv",
+            "text/csv"
+        )
