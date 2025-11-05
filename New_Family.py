@@ -64,7 +64,7 @@ def display_images(df, max_columns=3):
 # ---- App ----
 st.title("Family Cars")
 
-df = pd.read_csv("family_image_map.csv")  # your new CSV
+df = pd.read_csv("new_family_image_map.csv")  # your new CSV
 
 max_columns = st.sidebar.slider("Columns", 1, 10, 5)
 
