@@ -68,7 +68,7 @@ def display_images(df, max_columns=3):
 st.title("All Rounder Cars Review")
 
 # Load CSV
-df = pd.read_csv("allrounder_image_map.csv")
+df = pd.read_csv("new_allrounder_image_map.csv")
 
 # ✅ Remove duplicates to avoid duplicate widget keys
 df = df.drop_duplicates(subset=["imageId"]).reset_index(drop=True)
